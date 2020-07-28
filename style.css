@@ -270,3 +270,8 @@
         color: rgb(231, 14, 14);
     }
     
+    .about{
+      background-color: white;
+      height: 300px;
+      width: 300px;
+    }

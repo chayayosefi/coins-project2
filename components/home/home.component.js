@@ -1,5 +1,7 @@
 init();
 var arrayToggle = [];
+var graphInterval;
+clearInterval(graphInterval)
 function init() {
     const url = "https://api.coingecko.com/api/v3/coins/"
     getData(url, creatAllCoins)
@@ -69,11 +71,13 @@ function addInformation(e) {
 
 function checkCountToggle(e) {
     let nameToggle = e.path[1].id.substr(6);
+    console.log(arrayToggle.length)
     if (arrayToggle.includes(nameToggle)) {
         arrayToggle = arrayToggle.filter(toggle => toggle !== nameToggle)
-        console.log(arrayToggle)
     } else if (arrayToggle.length < 5) {
         arrayToggle.push(nameToggle)
+        console.log(arrayToggle)
+
     } else if (arrayToggle.length >= 5) {
         let coinsPanel = document.getElementById("coinsPanel")
         coinsPanel.innerHTML =
@@ -89,7 +93,7 @@ function checkCountToggle(e) {
 
 function saveChanges() {
     let listCoinsChoose = document.querySelectorAll(".myCheck");
-    let arrayTemp = []
+    let arrayTemp = [];
     for (let i = 0; i < listCoinsChoose.length; i++) {
         if (listCoinsChoose[i].checked) {
             arrayTemp.push(listCoinsChoose[i].id)
@@ -105,6 +109,7 @@ function saveChanges() {
     }
     document.getElementById("myDialog").close();
 }
+// console.log(arrayToggle)
 
 function closeModal() {
     document.getElementById("myDialog").close()
@@ -129,7 +134,7 @@ function getData(url, cb) {
 
 function saveCoin(coin) {
     localStorage.setItem(coin.id, JSON.stringify(coin));
-    setTimeout(function () { localStorage.removeItem(coin.id, coin) }, 3000);
+    setTimeout(function () { localStorage.removeItem(coin.id, coin) }, 12000);
 }
 
 function checkCoin(id) {
@@ -149,8 +154,10 @@ function searchCoin(e) {
     for (let i = 0; i < allCards.length; i++) {
         if (allCards[i].id === inputValue) {
             allCards[i].style.display = 'flex'
-        }
-        else { allCards[i].style.display = 'none' }
+        }else if(inputValue===''){
+            allCards[i].style.display = 'flex'
+ 
+        } else { allCards[i].style.display = 'none' }
     }
 }
 

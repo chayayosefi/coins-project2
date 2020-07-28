@@ -14,10 +14,9 @@ window.onload = function () {
     init();
 }
 
-
 function init() {
     document.querySelector('nav > ul').addEventListener('click', selectRoute);
-document.body.style.backgroundImage="url('background2.png')"
+    document.body.style.backgroundImage = "url('background2.png')"
 }
 
 function selectRoute(event) {
@@ -28,9 +27,6 @@ function selectRoute(event) {
 
     let e = event.target.textContent.toLowerCase()
     let newE = e.replace(/ /g, '')
-     if (newE === 'search') {
-        searchCoin(e)
-    }
     routes[newE](outlet)
 }
 
