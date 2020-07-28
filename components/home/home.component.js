@@ -3,12 +3,14 @@ var arrayToggle = [];
 var graphInterval;
 clearInterval(graphInterval)
 function init() {
+    console.log('init')
     const url = "https://api.coingecko.com/api/v3/coins/"
     getData(url, creatAllCoins)
 }
 
 function creatAllCoins() {
     let coins = JSON.parse(this.responseText);
+    
     let html = coins.map(coin =>
         `
         <div class="row cards" id="${coin.symbol}">
@@ -23,10 +25,14 @@ function creatAllCoins() {
     ).join('')
     let CoinsList = document.querySelector('.link-outlet');
     CoinsList.innerHTML = html
+    console.log('test1')
+
     CoinsList.addEventListener('click', addInformation)
 }
 
 function addInformation(e) {
+    console.log('test')
+    // debugger
     let check = e.target.classList
     const id = e.target.id;
     if (id === '' || check.contains('goBack') || !check.contains('click')) {
@@ -70,6 +76,7 @@ function addInformation(e) {
 }
 
 function checkCountToggle(e) {
+    // debugger
     let nameToggle = e.path[1].id.substr(6);
     console.log(arrayToggle.length)
     if (arrayToggle.includes(nameToggle)) {

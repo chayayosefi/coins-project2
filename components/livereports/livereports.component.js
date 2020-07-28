@@ -1,8 +1,8 @@
-var coins=arrayToggle;
+// var coins = [...arrayToggle];
 var chart;
-console.log('coins',coins);
+// console.log('coins', coins);
 
-function createData(coins) {    
+function createData(coins) {
     var data = []
     for (var i = 0; i < coins.length; i++) {
         data.push({
@@ -18,12 +18,9 @@ function createData(coins) {
     return (data)
 }
 
-function graph(coins) {    
-    if(coins.length===0){
-        alert('You must select at least one coin!!');
-        return;
-    }
-        chart = new CanvasJS.Chart("chartContainer", {
+function graph(coins) {
+    
+    chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
             text: "Real-time reports screen"
@@ -41,34 +38,34 @@ function graph(coins) {
         data: createData(coins)
     });
 
-    
+
     chart.render();
-    
+
     var stringCoins = coins.join()
-    
+
     var url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${stringCoins}&tsyms=USD`
-    
-    graphInterval=setInterval(function(){createApi(url,createDatapoinst)},2000) 
+
+    graphInterval = setInterval(function () { createApi(url, createDatapoinst) }, 2000)
 }
 
-graph(coins)
+graph([...arrayToggle])
 
 function createDatapoinst() {
     arrayCoins = JSON.parse(this.responseText)
     var i = 0
     for (let key in arrayCoins) {
-        if( chart.data[i].dataPoints.length===15){
-            chart.data[i].dataPoints.splice(0,1)            
+        if (chart.data[i].dataPoints.length === 15) {
+            chart.data[i].dataPoints.splice(0, 1)
         }
-        chart.data[i].dataPoints.push({ x: new Date(), y: arrayCoins[key].USD})
-        i++   
+        chart.data[i].dataPoints.push({ x: new Date(), y: arrayCoins[key].USD })
+        i++
     }
     chart.render();
 }
 
-function createApi (url,cb){
+function createApi(url, cb) {
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener("load",cb);
+    xhr.addEventListener("load", cb);
     xhr.open('GET', url);
     xhr.send();
 }
