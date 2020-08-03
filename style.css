@@ -5,6 +5,7 @@
     font-weight: bold;
     font-size: 100px;
     }
+
     /* .title{
         background-image:url("background5.png");
         height: 200px;
@@ -13,6 +14,7 @@
     } */
 
     main{
+      padding: 10px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -22,8 +24,17 @@
     width: 350px;
     height: 350px;
     margin: 5px;
-    position: relative;
+    padding-left: 0px;
+    padding-right: 0px;
+    /* position: relative; */
     background-color: lightgray;
+    border-radius: 20px;
+    }
+    .div_toggle{
+      position: absolute;
+      right:0;
+      top: 90px;
+
     }
     .cardInfo{
     width: 350px;
@@ -31,11 +42,13 @@
     z-index: 10;
     }
 
-    /* .custom-control, custom-switch{
-    position: absolute;
-    top: 0;
-    right: 0;
-    } */
+    .coinHeader {
+      background-color: white;
+
+/* height: 55px;
+width: 250px; */
+
+  }
 
     .card-body{
     position: relative;
@@ -50,19 +63,7 @@
     .back{
         display: none;
     }
-    
-
-    /* #myProgress {
-    width: 100%;
-    background-color: #ddd;
-    }
   
-    #myBar {
-    width: 1%;
-    height: 30px;
-    background-color: #4CAF50;
-    } */
-
     .pace {
         -webkit-pointer-events: none;
         pointer-events: none;
@@ -261,17 +262,20 @@
       .pace.pace-inactive {
         display: none;
       }
-      
-      .close {
-        background-color: transparent;
-        border: none;
-    }
-    .close:hover {
-        color: rgb(231, 14, 14);
-    }
     
     .about{
-      background-color: white;
-      height: 300px;
-      width: 300px;
+      /* background-color: white; */
+      height: 500px;
+      width: 550px;
+      display: flex;
+      /* position: relative; */
+    }
+    #my-picture{
+      flex-wrap: wrap;
+      position: absolute;
+      margin-top: 0px;
+      right: 400px;
+      height: 500px;
+      width: 500px;
+      border-radius: 100px;
     }

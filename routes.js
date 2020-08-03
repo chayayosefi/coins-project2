@@ -18,7 +18,6 @@ function livereports(outlet) {
 function about(outlet) {
   outlet.innerHTML = "<h1>ABOUT</h1>"
   loadContent('./components/about/about.component.html', outlet)
-  //   loadScript('./components/about/about.component.js')  
 }
 
 function loadContent(url, outlet) {
