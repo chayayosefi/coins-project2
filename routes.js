@@ -1,6 +1,7 @@
 
 
 function home(outlet) {
+  document.querySelector(".form-inline").style.display="block";
   loadScript("/components/home/home.component.js");
 }
 
@@ -10,12 +11,13 @@ function livereports(outlet) {
     alert('You must select at least one coin!!');
     return;
   }
-
+document.querySelector(".form-inline").style.display="none";
   loadContent('./components/livereports/livereports.component.html', outlet)
   loadScript("/components/livereports/livereports.component.js")
 }
 
 function about(outlet) {
+  document.querySelector(".form-inline").style.display="none";
   outlet.innerHTML = "<h1>ABOUT</h1>"
   loadContent('./components/about/about.component.html', outlet)
 }

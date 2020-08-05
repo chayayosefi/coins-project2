@@ -1,10 +1,11 @@
 init();
 var arrayToggle = [];
 var graphInterval;
+var tempToggle=null;
+
 clearInterval(graphInterval);
 
 function init() {
-    // console.log('init')
     const url = "https://api.coingecko.com/api/v3/coins/"
     getData(url, creatAllCoins)
 }
@@ -13,31 +14,27 @@ function creatAllCoins() {
     let coins = JSON.parse(this.responseText);
 
     let html = coins.map(coin => {
-    //        return `
-    //     <div class="row cards" id="${coin.symbol}">
-    //     <div class="card card_${coin.id} col-xs-1 col-sm-10 col-md-3 col-lg-10 row ">
-    //     <header class="coinHeader">
-    //     <div class="card-body" id="${coin.id}">
-    //     <h3 class="card-title">${coin.symbol}</h3>
-    //     </header>
-    //     <div class="div_toggle custom-control custom-switch" id="toggle${coin.symbol}">
-    //     <input type="checkbox" class="custom-control-input toggle click" id="customSwitch${coins.indexOf(coin)}">
-    //     <label class="custom-control-label" for="customSwitch${coins.indexOf(coin)}"></label></div>
-    //     <h4 class="card-text">${coin.id}</h4>
-    //     <div id="card_more_${coin.id}" class="card_more_${coin.id}"></div>
-    //     <div class="div-btn"><button onClick="onMoreInfo(this, 'bm_${coin.id}', '${coin}')" class="btn btn-primary click" id="bm_${coin.id}" data-toggle="collapse" data-target="#demo">More info</button><button class="btn btn-primary back goBack click"onClick="goBack(this,'gb_${coin.id}')" id="gb_${coin.id}">Go Back</button></div></div> </div></div>`
-
-    // }).join('')
         return `
         <div class="row cards" id="${coin.symbol}">
-        <div class="card card_${coin.id} col-xs-1 col-sm-10 col-md-3 col-lg-10 row ">
-        <div class="card-body" id="${coin.id}">
-        <div class="custom-control custom-switch" id="toggle${coin.symbol}">
-        <input type="checkbox" class="custom-control-input toggle click" id="customSwitch${coins.indexOf(coin)}">
-        <label class="custom-control-label" for="customSwitch${coins.indexOf(coin)}"></label></div>
-        <h5 class="card-title">${coin.symbol}</h5><p class="card-text">${coin.id}</p>
-        <div id="card_more_${coin.id}" class="card_more_${coin.id}"></div>
-        <div class="div-btn"><button onClick="onMoreInfo(this, 'bm_${coin.id}', '${coin}')" class="btn btn-primary click" id="bm_${coin.id}" data-toggle="collapse" data-target="#demo">More info</button><button class="btn btn-primary back goBack click"onClick="goBack(this,'gb_${coin.id}')" id="gb_${coin.id}">Go Back</button></div></div> </div></div>`
+    <div class="card card_${coin.id} col-xs-1 col-sm-10 col-md-3 col-lg-10 row ">
+    <div class="card-body" id="${coin.id}">
+    <div class="custom-control custom-switch div_toggle" id="toggle${coin.symbol}">
+        <input type="checkbox" class="custom-control-input toggle click"
+            id="customSwitch${coins.indexOf(coin)}">
+        <label class="custom-control-label" for="customSwitch${coins.indexOf(coin)}"></label>
+    </div>
+            <h5 class="card-title">${coin.symbol}</h5>
+            <p class="card-text">${coin.id}</p>
+            <div class="div-btn">
+                <button  class="btn btn-primary click"
+                    id="bm_${coin.id}" data-toggle="collapse" data-target="#card_more_${coin.id}" aria-expanded=false aria-controls="card_more_${coin.id}">More
+                    info</button><button class="btn btn-primary back goBack click"
+                    onClick="goBack(this,'gb_${coin.id}')" id="gb_${coin.id}">Go Back</button>
+            </div>
+            <div id="card_more_${coin.id}" class="card_more_${coin.id} collapse"></div>
+        </div>
+    </div>
+</div>`
 
     }).join('')
 
@@ -49,24 +46,14 @@ function creatAllCoins() {
         CoinsList.hasEvent = true;
     }
 
-    // CoinsList.addEventListener('click', addInformation)
 }
 
-function onMoreInfo(event, coinId, coin) {
-    // console.log(coinId)
-}
 
 function addInformation(e) {
-    // console.log(e);
     e.stopPropagation();
-    // console.log('test')
-    // debugger
     let check = e.target.classList
     let id = e.target.id;
-    // console.log(id);
-    id=id.slice(3)
-
-    // console.log(id);
+    id = id.slice(3)
     if (id === '' || check.contains('goBack') || !check.contains('click')) {
         return
     }
@@ -92,18 +79,11 @@ function addInformation(e) {
         loadInformation(information)
     }
     function loadInformation(information) {
-        // console.log(information);
-        // console.log(e);
-        let idmi=e.target.id
-        idmi=idmi.slice(3)
-        // let newDiv = e.path[2].children[2];
-        let newDiv=document.getElementById("card_more_"+idmi)
-        // console.log(newDiv);
-
-        let btnMore = document.getElementById("bm_"+idmi)
-        //  let btnMore = document.getElementById("bm-"+id)
-        let btnDiv = document.getElementById("gb_"+idmi);
-        // console.log(btnDiv);
+        let idmi = e.target.id
+        idmi = idmi.slice(3)
+        let newDiv = document.querySelector(".card_more_" + idmi)
+        let btnMore = document.getElementById("bm_" + idmi)
+        let btnDiv = document.getElementById("gb_" + idmi);
         newDiv.innerHTML = `
         <img src=${information.image.small}></img>
         <p> USD- ${information.market_data.current_price.usd}&#36</p>
@@ -111,25 +91,22 @@ function addInformation(e) {
         <p> ILS- ${information.market_data.current_price.ils}&#8362</p>`;
         btnDiv.classList.remove('back');
         btnMore.disabled = true;
+        newDiv.classList.add('show')
         saveCoin(information)
-        // document.getElementById(`${information.symbol}`).addEventListener('click', goBack)
     }
 }
 
 function checkCountToggle(e) {
-    // debugger
     let nameToggle = e.path[1].id.substr(6);
-    // console.log(arrayToggle.length)
+    tempToggle=nameToggle
     if (arrayToggle.includes(nameToggle)) {
         arrayToggle = arrayToggle.filter(toggle => toggle !== nameToggle)
     } else if (arrayToggle.length < 5) {
         arrayToggle.push(nameToggle)
-        // console.log(arrayToggle)
-        
     } else if (arrayToggle.length >= 5) {
         let coinsPanel = document.getElementById("coinsPanel")
         coinsPanel.innerHTML =
-        `<input type="checkbox" class="myCheck" id="${arrayToggle[0]}" checked><label> ${arrayToggle[0]}</label><br>
+            `<input type="checkbox" class="myCheck" id="${arrayToggle[0]}" checked><label> ${arrayToggle[0]}</label><br>
         <input type="checkbox" class="myCheck" id="${arrayToggle[1]}" checked><label> ${arrayToggle[1]}</label><br>
         <input type="checkbox" class="myCheck" id="${arrayToggle[2]}" checked><label> ${arrayToggle[2]}</label><br>
         <input type="checkbox" class="myCheck" id="${arrayToggle[3]}" checked><label> ${arrayToggle[3]}</label><br>
@@ -147,36 +124,37 @@ function saveChanges() {
             arrayTemp.push(listCoinsChoose[i].id)
         }
     }
-    // console.log(arrayToggle)
     for (let i = arrayToggle.length - 1; i >= 0; i--) {
         if (!arrayTemp.includes(arrayToggle[i])) {
-            document.getElementById(`toggle${arrayToggle[i]}`).children[0].checked = false;
+            document.getElementById(`toggle${arrayToggle[i]}`).firstElementChild.checked = false;
             arrayToggle.splice(i, 1)
-            // console.log(arrayToggle)
         }
     }
+    if(tempToggle){
+        let temp=document.getElementById('toggle'+tempToggle);
+        temp.children[0].checked = true;
+      arrayToggle.push(tempToggle)
+    }
+    if(arrayToggle.length>5){
+        arrayToggle.pop()
+        let temp=document.getElementById('toggle'+tempToggle);
+        temp.children[0].checked = false;
+    }
     document.getElementById("myDialog").close();
+    tempToggle=null;
 }
-// console.log(arrayToggle)
 
 function closeModal() {
     document.getElementById("myDialog").close()
+    tempToggle=null;
 }
 
 function goBack(e) {
-    let idgb=e.id
-    // console.log(idgb);
-    idgb=idgb.split("_")[1]
-    // console.log(idgb);
-    let divInfo = document.getElementById("card_more_"+idgb)
-    // console.log(divInfo);
-    // console.log(e.path[2].children[3])
-    // let btnMore = e.path[2].children[3].children[0];
-    let btnMore = document.getElementById("bm_"+idgb)
-    // console.log(btnMore);
-    let btnDiv = document.getElementById("gb_"+idgb);
-    // console.log(btnDiv);
-
+    let idgb = e.id
+    idgb = idgb.split("_")[1]
+    let divInfo = document.getElementById("card_more_" + idgb)
+    let btnMore = document.getElementById("bm_" + idgb)
+    let btnDiv = document.getElementById("gb_" + idgb);
     divInfo.innerHTML = "";
     btnDiv.classList.add('back');
     btnMore.disabled = false;

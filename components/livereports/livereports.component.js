@@ -2,6 +2,7 @@
 var chart;
 // console.log('coins', coins);
 
+
 function createData(coins) {
     var data = []
     for (var i = 0; i < coins.length; i++) {
